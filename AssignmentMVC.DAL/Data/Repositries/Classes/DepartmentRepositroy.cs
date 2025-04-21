@@ -11,42 +11,42 @@ namespace AssignmentMVC.DAL.Data.Repositries.Classes
 {
     public class DepartmentRepositroy(AppDbContext dbContext) : IDepartmentRepositroy
     {
-        private readonly AppDbContext _DbContext = dbContext;
+        private readonly AppDbContext _dbContext = dbContext;
 
         public int Add(Department Entity)
         {
-            _DbContext.Departments.Add(Entity);
-            return _DbContext.SaveChanges();
+            _dbContext.Departments.Add(Entity);
+            return _dbContext.SaveChanges();
         }
 
         public int Delete(Department Entity)
         {
-            _DbContext.Departments.Remove(Entity);
-            return _DbContext.SaveChanges();
+            _dbContext.Departments.Remove(Entity);
+            return _dbContext.SaveChanges();
         }
 
         public IEnumerable<Department> GetAll(bool withtracking = false)
         {
             if (withtracking) 
             {
-                return _DbContext.Departments.ToList();
+                return _dbContext.Departments.ToList();
             }
             else
             {
-                return _DbContext.Departments.AsNoTracking().ToList();
+                return _dbContext.Departments.AsNoTracking().ToList();
             }
             
         }
 
         public Department GetByID(int id)
         {
-            return _DbContext.Departments.Find(id);
+            return _dbContext.Departments.Find(id);
         }
 
         public int Update(Department Entity)
         {
-            _DbContext.Departments.Update(Entity);
-            return _DbContext.SaveChanges();
+            _dbContext.Departments.Update(Entity);
+            return _dbContext.SaveChanges();
         }
     }
 }

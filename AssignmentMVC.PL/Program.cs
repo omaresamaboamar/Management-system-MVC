@@ -1,4 +1,8 @@
+using AssignmentMVC.BLL.Service;
 using AssignmentMVC.DAL.Data;
+using AssignmentMVC.DAL.Data.Repositries.Classes;
+using AssignmentMVC.DAL.Data.Repositries.Interfacies;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssignmentMVC.PL
@@ -18,6 +22,11 @@ namespace AssignmentMVC.PL
             }
             
             );
+
+            builder.Services.AddScoped<IDepartmentRepositroy, DepartmentRepositroy>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

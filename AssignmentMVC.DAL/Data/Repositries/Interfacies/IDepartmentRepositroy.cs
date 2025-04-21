@@ -10,7 +10,7 @@ namespace AssignmentMVC.DAL.Data.Repositries.Interfacies
     public interface IDepartmentRepositroy
     {
         // Get All 
-        IEnumerable<Department> GetAll(bool withtracking);
+        IEnumerable<Department> GetAll(bool withtracking = false);
 
         // GetById 
 
@@ -20,7 +20,7 @@ namespace AssignmentMVC.DAL.Data.Repositries.Interfacies
 
         int Delete(Department Entity);
 
-        int Add (Department Entity);
+        int Add(Department Entity);
 
     }
 }
