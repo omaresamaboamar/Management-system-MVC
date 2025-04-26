@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AssignmentMVC.BLL.DTO
+namespace AssignmentMVC.PL.ViewModels.Department
 {
-    public class CreateDepartmentDto
+    public class DepartmentViewModels
     {
-        
+        [Required(ErrorMessage = "Name is Required!!")]
         public string Name { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;
         public string? Description { get; set; }

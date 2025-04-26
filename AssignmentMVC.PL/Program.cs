@@ -1,4 +1,6 @@
-using AssignmentMVC.BLL.Service;
+using AssignmentMVC.BLL.Profiles;
+using AssignmentMVC.BLL.Service.ServiceClasses;
+using AssignmentMVC.BLL.Service.ServicesInterface;
 using AssignmentMVC.DAL.Data;
 using AssignmentMVC.DAL.Data.Repositries.Classes;
 using AssignmentMVC.DAL.Data.Repositries.Interfacies;
@@ -23,10 +25,12 @@ namespace AssignmentMVC.PL
             
             );
 
-            builder.Services.AddScoped<IDepartmentRepositroy, DepartmentRepositroy>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-            
-            
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -1,4 +1,4 @@
-﻿namespace AssignmentMVC.PL.ViewModels
+﻿namespace AssignmentMVC.PL.ViewModels.Department
 {
     public class DepartmentEditViewModel
     {

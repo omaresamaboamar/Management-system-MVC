@@ -5,7 +5,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AssignmentMVC.DAL.Data.Configurations;
-using AssignmentMVC.DAL.Models;
+using AssignmentMVC.DAL.Models.Departments;
+using AssignmentMVC.DAL.Models.Employees;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssignmentMVC.DAL.Data
@@ -29,5 +30,6 @@ namespace AssignmentMVC.DAL.Data
         }
 
        public DbSet<Department> Departments { get; set; }
+       public DbSet<Employee> Employee { get; set; }
     }
 }

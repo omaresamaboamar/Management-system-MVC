@@ -1,7 +1,9 @@
 ﻿using AssignmentMVC.BLL.DTO;
-using AssignmentMVC.BLL.Service;
-using AssignmentMVC.PL.ViewModels;
+using AssignmentMVC.BLL.DTO.DepartmentsDTO;
+using AssignmentMVC.BLL.Service.ServicesInterface;
+using AssignmentMVC.PL.ViewModels.Department;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace AssignmentMVC.PL.Controllers
@@ -25,7 +27,7 @@ namespace AssignmentMVC.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateDepartmentDto departmentDto)
+        public IActionResult Create(DepartmentViewModels departmentDto)
         {
 
 
@@ -33,7 +35,14 @@ namespace AssignmentMVC.PL.Controllers
             {
                 try
                 {
-                    int result = _departmentService.AddDepartment(departmentDto);
+                    var departmentModelsView = new CreateDepartmentDto()
+                    {
+                        Name = departmentDto.Name,
+                        Code = departmentDto.Code,
+                        Description = departmentDto.Description,
+                        DateOfCreation = departmentDto.DateOfCreation
+                    };
+                    int result = _departmentService.AddDepartment(departmentModelsView);
                     if (result > 0)
                     {
                         return RedirectToAction(nameof(Index));
@@ -78,7 +87,7 @@ namespace AssignmentMVC.PL.Controllers
             if ((!id.HasValue)) return BadRequest();
             var department = _departmentService.GetDepartmentById(id.Value);
             if (department is null) return NotFound();
-            var departmentViewModel = new DepartmentEditViewModel()
+            var departmentViewModel = new DepartmentViewModels()
             {
                 Name = department.Name,
                 Code = department.Code,
@@ -89,9 +98,9 @@ namespace AssignmentMVC.PL.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Edit([FromRoute]int? id, DepartmentEditViewModel viewModel)
+        public IActionResult Edit([FromRoute]int? id, DepartmentViewModels viewModel)
         {
-            if(!ModelState.IsValid) return BadRequest();
+            if(!ModelState.IsValid) return View(viewModel);
             try
             {
                 var updateDepartment = new UpdateDepartmentDto()
@@ -123,6 +132,52 @@ namespace AssignmentMVC.PL.Controllers
             }
             return View(viewModel);
         }
-       #endregion
+        #endregion
+        #region Delete Department
+        //[HttpGet]
+        //public IActionResult Delete(int? id)
+        //{
+        //    if(!id.HasValue) return BadRequest();
+        //    var department = _departmentService.GetDepartmentById(id.Value);
+        //    if (department is null) return NotFound();
+        //    return View(department);
+        //}
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+             if(id == 0) return BadRequest();
+            try
+            {
+                bool Result = _departmentService.DeleteDepartment(id);
+                if (Result) 
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Department is not Deleted!!");
+                    return RedirectToAction(nameof(Delete),new {id});
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                if (_environment.IsDevelopment())
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _logger.LogError(ex.Message);
+                    return View("Erorr");
+                }
+
+            }
+
+        }
+        #endregion
     }
 }

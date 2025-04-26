@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AssignmentMVC.BLL.DTO;
-using AssignmentMVC.DAL.Models;
+using AssignmentMVC.BLL.DTO.DepartmentsDTO;
+using AssignmentMVC.DAL.Models.Departments;
 
 namespace AssignmentMVC.BLL.Factories
 {

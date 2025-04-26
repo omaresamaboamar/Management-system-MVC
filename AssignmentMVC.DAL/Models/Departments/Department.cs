@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AssignmentMVC.DAL.Models
+namespace AssignmentMVC.DAL.Models.Departments
 {
     public class Department : BaseEntity
     {

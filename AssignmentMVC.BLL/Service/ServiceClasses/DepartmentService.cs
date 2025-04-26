@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AssignmentMVC.BLL.DTO;
+using AssignmentMVC.BLL.DTO.DepartmentsDTO;
 using AssignmentMVC.BLL.Factories;
+using AssignmentMVC.BLL.Service.ServicesInterface;
 using AssignmentMVC.DAL.Data.Repositries.Interfacies;
 using AssignmentMVC.DAL.Models;
 
-namespace AssignmentMVC.BLL.Service
+namespace AssignmentMVC.BLL.Service.ServiceClasses
 {
-    public class DepartmentService(IDepartmentRepositroy _departmentRepositroy) : IDepartmentService
+    public class DepartmentService(IDepartmentRepository _departmentRepository) : IDepartmentService
     {
-        //private readonly IDepartmentRepositroy _departmentRepositroy = departmentRepositroy;
+        //private readonly IDepartmentRepositroy _departmentRepository = departmentRepositroy;
 
         public IEnumerable<DepartmentDto> GetAllDepartment()
         {
-            var department = _departmentRepositroy.GetAll();
+            var department = _departmentRepository.GetAll();
             // 1.manaul mapping
             //var departmentToReturn = department.Select(D => new DepartmentDto()
             //{
@@ -34,7 +35,7 @@ namespace AssignmentMVC.BLL.Service
 
         public DepartmentDetailsDto? GetDepartmentById(int id)
         {
-            var department = _departmentRepositroy.GetByID(id);
+            var department = _departmentRepository.GetByID(id);
             //if (department is null) return null;
             //else
             //{
@@ -64,21 +65,21 @@ namespace AssignmentMVC.BLL.Service
         public int AddDepartment(CreateDepartmentDto departmentdto)
         {
             var department = departmentdto.ToDepartment();
-            return _departmentRepositroy.Add(department);
+            return _departmentRepository.Add(department);
         }
 
         public int UpdateDepartment(UpdateDepartmentDto departmentDto)
         {
-            return _departmentRepositroy.Update(departmentDto.ToDepartment());
+            return _departmentRepository.Update(departmentDto.ToDepartment());
         }
 
         public bool DeleteDepartment(int id)
         {
-            var department = _departmentRepositroy.GetByID(id);
+            var department = _departmentRepository.GetByID(id);
             if (department is null) return false;
             else
             {
-                int resulte = _departmentRepositroy.Delete(department);
+                int resulte = _departmentRepository.Delete(department);
                 return resulte > 0 ? true : false;
             }
         }

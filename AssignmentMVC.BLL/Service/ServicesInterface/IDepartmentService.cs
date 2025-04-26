@@ -1,6 +1,6 @@
-﻿using AssignmentMVC.BLL.DTO;
+﻿using AssignmentMVC.BLL.DTO.DepartmentsDTO;
 
-namespace AssignmentMVC.BLL.Service
+namespace AssignmentMVC.BLL.Service.ServicesInterface
 {
     public interface IDepartmentService
     {
