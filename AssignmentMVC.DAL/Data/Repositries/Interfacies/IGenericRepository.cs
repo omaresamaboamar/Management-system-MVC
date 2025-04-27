@@ -14,8 +14,8 @@ namespace AssignmentMVC.DAL.Data.Repositries.Interfacies
         IEnumerable<TEntity> GetAll(bool withtracking = false);
         // GetById 
         TEntity GetByID(int id);
-        int Update(TEntity Entity);
-        int Delete(TEntity Entity);
-        int Add(TEntity Entity);
+        void Update(TEntity Entity);
+        void Delete(TEntity Entity);
+        void Add(TEntity Entity);
     }
 }

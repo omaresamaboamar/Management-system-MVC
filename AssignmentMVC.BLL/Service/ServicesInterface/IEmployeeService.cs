@@ -10,6 +10,7 @@ namespace AssignmentMVC.BLL.Service.ServicesInterface
     public interface IEmployeeService
     {
         IEnumerable<EmployeeDto> GetAllEmployees(bool WithTracking = false);
+        IEnumerable<EmployeeDto> SearchEmployeeByName(string name);
         EmployeeDetailsDto? GetEmployeeById(int id);
 
         int CreateEmployee(CreateEmployeeDto employee);

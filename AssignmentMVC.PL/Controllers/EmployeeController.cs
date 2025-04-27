@@ -9,14 +9,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentMVC.PL.Controllers
 {
-    public class EmployeeController(IEmployeeService _employeeService ,ILogger<EmployeeController> _logger,IWebHostEnvironment _environment) : Controller
+    public class EmployeeController(IEmployeeService _employeeService, /* IDepartmentService _departmentService,*/ ILogger<EmployeeController> _logger,IWebHostEnvironment _environment) : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string? EmployeeSearchName)
         {
-            var Employees = _employeeService.GetAllEmployees();
-            ViewData["Message"] = "Hello View Data";
-
-            ViewBag.Message = "Hello View Bag";
+            dynamic Employees = null!;
+            //ViewData["Message"] = "Hello View Data";
+            //ViewBag.Message = "Hello View Bag";
+            if (string.IsNullOrEmpty(EmployeeSearchName))
+            {
+                Employees = _employeeService.GetAllEmployees();
+            }
+            else
+            {
+                Employees = _employeeService.SearchEmployeeByName(EmployeeSearchName);
+            }
             return View(Employees);
         }
 
@@ -25,6 +32,7 @@ namespace AssignmentMVC.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            //ViewData["Departments"] = _departmentService.GetAllDepartment();
             return View();
         }
 
@@ -48,6 +56,7 @@ namespace AssignmentMVC.PL.Controllers
                         Gender = employeeDto.Gender,
                         EmployeeType = employeeDto.EmployeeType,
                         HiringDate = employeeDto.HiringDate,
+                        DepartmentId = employeeDto.DepartmentId,
                     };
                     int result = _employeeService.CreateEmployee(employeeModelsView);
                     if (result > 0)
@@ -106,7 +115,9 @@ namespace AssignmentMVC.PL.Controllers
                 HiringDate = employee.HiringDate,
                 Gender = Enum.Parse<Gender>(employee.Gender),
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
+                          
             };
+            //ViewData["Departments"] = _departmentService.GetAllDepartment();
             return View(employeeDto);
         }
 
@@ -130,6 +141,7 @@ namespace AssignmentMVC.PL.Controllers
                     HiringDate = viewModel.HiringDate,
                     Gender = viewModel.Gender,
                     EmployeeType = viewModel.EmployeeType,
+                    DepartmentId = viewModel.DepartmentId
                 };
 
             
@@ -152,6 +164,7 @@ namespace AssignmentMVC.PL.Controllers
                     _logger.LogError(ex.Message);
                 }
             }
+            
             return View(viewModel);
         }
         #endregion

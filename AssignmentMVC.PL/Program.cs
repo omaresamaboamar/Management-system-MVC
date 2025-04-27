@@ -21,6 +21,7 @@ namespace AssignmentMVC.PL
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Defaultconnection"));
+                options.UseLazyLoadingProxies();
             }
             
             );
@@ -31,6 +32,7 @@ namespace AssignmentMVC.PL
             //builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IUnitOfwork, UnitOfWork>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

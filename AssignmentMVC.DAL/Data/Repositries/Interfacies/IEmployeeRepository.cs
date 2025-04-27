@@ -9,6 +9,6 @@ namespace AssignmentMVC.DAL.Data.Repositries.Interfacies
 {
     public interface IEmployeeRepository :IGenericRepository<Employee>
     {
-
+        IQueryable<Employee> GetEmployeeByName(string name);
     }
 }

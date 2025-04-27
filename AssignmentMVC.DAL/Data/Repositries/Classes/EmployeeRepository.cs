@@ -10,6 +10,11 @@ namespace AssignmentMVC.DAL.Data.Repositries.Classes
 {
     public class EmployeeRepository(AppDbContext dbContext) : GenericRepository<Employee>(dbContext), IEmployeeRepository
     {
+        public IQueryable<Employee> GetEmployeeByName(string name)
+        {
+            return dbContext.Employee.Where(e => e.Name.ToLower().Contains(name));
+        }
 
+       
     }
 }

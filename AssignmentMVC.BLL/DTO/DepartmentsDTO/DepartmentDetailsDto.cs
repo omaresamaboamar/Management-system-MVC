@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AssignmentMVC.DAL.Models;
+using AssignmentMVC.DAL.Models.Departments;
 
 namespace AssignmentMVC.BLL.DTO.DepartmentsDTO
 {
@@ -30,5 +31,6 @@ namespace AssignmentMVC.BLL.DTO.DepartmentsDTO
         public string Name { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;
         public string? Description { get; set; }
+         
     }
 }

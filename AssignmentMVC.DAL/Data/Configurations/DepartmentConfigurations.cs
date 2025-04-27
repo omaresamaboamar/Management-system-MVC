@@ -16,6 +16,11 @@ namespace AssignmentMVC.DAL.Data.Configurations
             builder.Property(D => D.Id).UseIdentityColumn(10,10);
             builder.Property(D => D.Name).HasColumnType("Varchar(20)");
             builder.Property(D => D.Code).HasColumnType("Varchar(20)");
+
+            builder.HasMany(D => D.Employees)
+                .WithOne(E => E.Department)
+                .HasForeignKey(E => E.DepartmentId)
+                .OnDelete(DeleteBehavior.Cascade);
             base.Configure(builder);
         }
     }

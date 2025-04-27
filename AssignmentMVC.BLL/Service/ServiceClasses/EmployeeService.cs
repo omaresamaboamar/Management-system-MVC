@@ -12,11 +12,11 @@ using AutoMapper;
 
 namespace AssignmentMVC.BLL.Service.ServiceClasses
 {
-    public class EmployeeService(IEmployeeRepository _employeeRepository ,IMapper _mapper) : IEmployeeService
+    public class EmployeeService(IUnitOfwork unitOfwork ,IMapper _mapper) : IEmployeeService
     {
         public IEnumerable<EmployeeDto> GetAllEmployees(bool WithTracking )
         {
-            var employees = _employeeRepository.GetAll(WithTracking);
+            var employees = unitOfwork.EmployeeRepository.GetAll(WithTracking);
             //var returnEmpToDto = employees.Select(e => new EmployeeDto()
             //{
             //    Id = e.Id,
@@ -32,9 +32,27 @@ namespace AssignmentMVC.BLL.Service.ServiceClasses
             var returnEmpToDto = _mapper.Map<IEnumerable<Employee>,IEnumerable<EmployeeDto>>(employees);
             return returnEmpToDto;
         }
+        public IEnumerable<EmployeeDto> SearchEmployeeByName(string name)
+        {
+            var employees = unitOfwork.EmployeeRepository.GetEmployeeByName(name.ToLower());
+            //var returnEmpToDto = employees.Select(e => new EmployeeDto()
+            //{
+            //    Id = e.Id,
+            //    Name = e.Name,
+            //    Email = e.Email,
+            //    Age = e.Age,
+            //    Salary = e.Salary,
+            //    IsActive = e.IsActive,
+            //    EmployeeType = e.EmployeeType.ToString(),
+            //    Gender  = e.Gender.ToString(),
+            //});
+            //return returnEmpToDto;
+            var returnEmpToDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
+            return returnEmpToDto;
+        }
         public EmployeeDetailsDto? GetEmployeeById(int id)
         {
-            var employee = _employeeRepository.GetByID(id);
+            var employee = unitOfwork.EmployeeRepository.GetByID(id);
             //if (employee == null) return null;
             //else
             //{
@@ -61,21 +79,26 @@ namespace AssignmentMVC.BLL.Service.ServiceClasses
         public int CreateEmployee(CreateEmployeeDto employee)
         {
             var Employee = _mapper.Map<CreateEmployeeDto, Employee>(employee);
-            return _employeeRepository.Add(Employee);
+             unitOfwork.EmployeeRepository.Add(Employee);
+            return unitOfwork.saveChanges();
         }
         public int UpdateEmployee(UpdateEmployeeDto employee)
         {
-            return _employeeRepository.Update(_mapper.Map<UpdateEmployeeDto , Employee>(employee));
+            unitOfwork.EmployeeRepository.Update(_mapper.Map<UpdateEmployeeDto , Employee>(employee));
+            return unitOfwork.saveChanges();
         }
         public bool DeleteEmployee(int id)
         {
-            var employee = _employeeRepository.GetByID(id);
+            var employee = unitOfwork.EmployeeRepository.GetByID(id);
             if (employee == null) return false;
             else
             {
                 employee.IsDeleted = true;
-                return _employeeRepository.Update(employee) > 0 ? true : false;
+                unitOfwork.EmployeeRepository.Update(employee) ;
+                return unitOfwork.saveChanges() > 0 ? true : false;
             }
         }
+
+        
     }
 }
