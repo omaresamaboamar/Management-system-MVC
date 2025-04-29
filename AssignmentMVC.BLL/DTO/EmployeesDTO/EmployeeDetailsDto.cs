@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace AssignmentMVC.BLL.DTO.EmployeesDTO
 {
@@ -23,6 +24,7 @@ namespace AssignmentMVC.BLL.DTO.EmployeesDTO
         public DateTime CreatedOn { get; set; }
         public int LastModifiedBy { get; set; }
         public DateTime LastModifiedOn { get; set; }
-        
+        public string? ImageName { get; set; }
+
     }
 }

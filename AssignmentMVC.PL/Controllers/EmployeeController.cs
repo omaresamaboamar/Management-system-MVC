@@ -1,5 +1,6 @@
 ﻿using AssignmentMVC.BLL.DTO.DepartmentsDTO;
 using AssignmentMVC.BLL.DTO.EmployeesDTO;
+using AssignmentMVC.BLL.Service.AttachmentService;
 using AssignmentMVC.BLL.Service.ServiceClasses;
 using AssignmentMVC.BLL.Service.ServicesInterface;
 using AssignmentMVC.DAL.Models.Employees;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentMVC.PL.Controllers
 {
-    public class EmployeeController(IEmployeeService _employeeService, /* IDepartmentService _departmentService,*/ ILogger<EmployeeController> _logger,IWebHostEnvironment _environment) : Controller
+    public class EmployeeController(IEmployeeService _employeeService, /* IDepartmentService _departmentService,*/ ILogger<EmployeeController> _logger,IWebHostEnvironment _environment , IAttachmentService attachmentService) : Controller
     {
         public IActionResult Index(string? EmployeeSearchName)
         {
@@ -57,6 +58,7 @@ namespace AssignmentMVC.PL.Controllers
                         EmployeeType = employeeDto.EmployeeType,
                         HiringDate = employeeDto.HiringDate,
                         DepartmentId = employeeDto.DepartmentId,
+                        Image  = employeeDto.Image 
                     };
                     int result = _employeeService.CreateEmployee(employeeModelsView);
                     if (result > 0)
@@ -115,7 +117,7 @@ namespace AssignmentMVC.PL.Controllers
                 HiringDate = employee.HiringDate,
                 Gender = Enum.Parse<Gender>(employee.Gender),
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
-                          
+                       
             };
             //ViewData["Departments"] = _departmentService.GetAllDepartment();
             return View(employeeDto);
@@ -141,7 +143,8 @@ namespace AssignmentMVC.PL.Controllers
                     HiringDate = viewModel.HiringDate,
                     Gender = viewModel.Gender,
                     EmployeeType = viewModel.EmployeeType,
-                    DepartmentId = viewModel.DepartmentId
+                    DepartmentId = viewModel.DepartmentId,
+                    Image = viewModel.Image
                 };
 
             
@@ -176,7 +179,10 @@ namespace AssignmentMVC.PL.Controllers
             try
             {
                 var deleted = _employeeService.DeleteEmployee(id.Value);
-                if (deleted) return RedirectToAction(nameof(Index));
+                if (deleted)
+                {   
+                    return RedirectToAction(nameof(Index));
+                }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Employee can't delete!!");

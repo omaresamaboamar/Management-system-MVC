@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AssignmentMVC.DAL.Models.Employees;
+using Microsoft.AspNetCore.Http;
 
 namespace AssignmentMVC.BLL.DTO.EmployeesDTO
 {
@@ -34,5 +35,6 @@ namespace AssignmentMVC.BLL.DTO.EmployeesDTO
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
         public int? DepartmentId { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

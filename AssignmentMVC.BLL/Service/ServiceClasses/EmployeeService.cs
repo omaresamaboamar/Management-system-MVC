@@ -5,16 +5,18 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using AssignmentMVC.BLL.DTO.EmployeesDTO;
+using AssignmentMVC.BLL.Service.AttachmentService;
 using AssignmentMVC.BLL.Service.ServicesInterface;
 using AssignmentMVC.DAL.Data.Repositries.Interfacies;
 using AssignmentMVC.DAL.Models.Employees;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace AssignmentMVC.BLL.Service.ServiceClasses
 {
-    public class EmployeeService(IUnitOfwork unitOfwork ,IMapper _mapper) : IEmployeeService
+    public class EmployeeService(IUnitOfwork unitOfwork, IMapper _mapper, IAttachmentService _attachmentService) : IEmployeeService
     {
-        public IEnumerable<EmployeeDto> GetAllEmployees(bool WithTracking )
+        public IEnumerable<EmployeeDto> GetAllEmployees(bool WithTracking)
         {
             var employees = unitOfwork.EmployeeRepository.GetAll(WithTracking);
             //var returnEmpToDto = employees.Select(e => new EmployeeDto()
@@ -29,7 +31,7 @@ namespace AssignmentMVC.BLL.Service.ServiceClasses
             //    Gender  = e.Gender.ToString(),
             //});
             //return returnEmpToDto;
-            var returnEmpToDto = _mapper.Map<IEnumerable<Employee>,IEnumerable<EmployeeDto>>(employees);
+            var returnEmpToDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
             return returnEmpToDto;
         }
         public IEnumerable<EmployeeDto> SearchEmployeeByName(string name)
@@ -76,15 +78,24 @@ namespace AssignmentMVC.BLL.Service.ServiceClasses
             //}
             return employee is null ? null : _mapper.Map<Employee, EmployeeDetailsDto>(employee);
         }
-        public int CreateEmployee(CreateEmployeeDto employee)
+        public int CreateEmployee(CreateEmployeeDto employeeDto)
         {
-            var Employee = _mapper.Map<CreateEmployeeDto, Employee>(employee);
-             unitOfwork.EmployeeRepository.Add(Employee);
+            var Employee = _mapper.Map<CreateEmployeeDto, Employee>(employeeDto);
+            if (employeeDto.Image is not null)
+            {
+                Employee.ImageName = _attachmentService.Uploud(employeeDto.Image, "images");
+            }
+            unitOfwork.EmployeeRepository.Add(Employee);
             return unitOfwork.saveChanges();
         }
         public int UpdateEmployee(UpdateEmployeeDto employee)
         {
-            unitOfwork.EmployeeRepository.Update(_mapper.Map<UpdateEmployeeDto , Employee>(employee));
+            var Employee = _mapper.Map<UpdateEmployeeDto, Employee>(employee);
+            if (employee.Image is not null)
+            {
+                Employee.ImageName = _attachmentService.Uploud(employee.Image, "images");
+            }
+            unitOfwork.EmployeeRepository.Update(Employee);
             return unitOfwork.saveChanges();
         }
         public bool DeleteEmployee(int id)
@@ -93,12 +104,16 @@ namespace AssignmentMVC.BLL.Service.ServiceClasses
             if (employee == null) return false;
             else
             {
+
                 employee.IsDeleted = true;
-                unitOfwork.EmployeeRepository.Update(employee) ;
-                return unitOfwork.saveChanges() > 0 ? true : false;
+                _attachmentService.Delete(employee.ImageName, "images");
+                employee.ImageName = null;
+                unitOfwork.EmployeeRepository.Update(employee);
+                unitOfwork.saveChanges();
+                return true;
             }
         }
 
-        
+
     }
 }

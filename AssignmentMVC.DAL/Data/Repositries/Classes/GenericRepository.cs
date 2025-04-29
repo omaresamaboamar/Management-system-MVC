@@ -44,6 +44,7 @@ namespace AssignmentMVC.DAL.Data.Repositries.Classes
         public void Update(TEntity Entity)
         {
             _dbContext.Set<TEntity>().Update(Entity);
+            
         }
     }
 }
