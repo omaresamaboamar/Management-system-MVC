@@ -37,9 +37,7 @@ namespace AssignmentMVC.PL
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             builder.Services.AddScoped<IUnitOfwork, UnitOfWork>();
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
-                
-
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
 
 
@@ -59,6 +57,7 @@ namespace AssignmentMVC.PL
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.MapControllerRoute(
                 name: "default",

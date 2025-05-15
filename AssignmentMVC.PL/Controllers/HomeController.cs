@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using AssignmentMVC.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssignmentMVC.PL.Controllers
@@ -12,7 +13,7 @@ namespace AssignmentMVC.PL.Controllers
         {
             _logger = logger;
         }
-
+        
         public IActionResult Index()
         {
             return View();

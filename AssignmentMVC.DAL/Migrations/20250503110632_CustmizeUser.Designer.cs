@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssignmentMVC.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250429133850_custmizeUserPage")]
-    partial class custmizeUserPage
+    [Migration("20250503110632_CustmizeUser")]
+    partial class CustmizeUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

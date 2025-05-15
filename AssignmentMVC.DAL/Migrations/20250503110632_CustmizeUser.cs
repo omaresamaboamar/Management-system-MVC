@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AssignmentMVC.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class custmizeUserPage : Migration
+    public partial class CustmizeUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
