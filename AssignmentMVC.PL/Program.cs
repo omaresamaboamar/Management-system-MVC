@@ -1,4 +1,13 @@
+using AssignmentMVC.BLL.Profiles;
+using AssignmentMVC.BLL.Service.AttachmentService;
+using AssignmentMVC.BLL.Service.ServiceClasses;
+using AssignmentMVC.BLL.Service.ServicesInterface;
 using AssignmentMVC.DAL.Data;
+using AssignmentMVC.DAL.Data.Repositries.Classes;
+using AssignmentMVC.DAL.Data.Repositries.Interfacies;
+using AssignmentMVC.DAL.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssignmentMVC.PL
@@ -15,9 +24,23 @@ namespace AssignmentMVC.PL
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Defaultconnection"));
+                options.UseLazyLoadingProxies();
             }
             
             );
+
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IUnitOfwork, UnitOfWork>();
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,10 +57,11 @@ namespace AssignmentMVC.PL
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
 
             app.Run();
         }
