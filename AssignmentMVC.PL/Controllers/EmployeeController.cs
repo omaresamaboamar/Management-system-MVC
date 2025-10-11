@@ -14,17 +14,8 @@ namespace AssignmentMVC.PL.Controllers
     {
         public IActionResult Index(string? EmployeeSearchName)
         {
-            dynamic Employees = null!;
-            //ViewData["Message"] = "Hello View Data";
-            //ViewBag.Message = "Hello View Bag";
-            if (string.IsNullOrEmpty(EmployeeSearchName))
-            {
-                Employees = _employeeService.GetAllEmployees();
-            }
-            else
-            {
-                Employees = _employeeService.SearchEmployeeByName(EmployeeSearchName);
-            }
+           var Employees = _employeeService.GetAllEmployees(EmployeeSearchName);
+            
             return View(Employees);
         }
 

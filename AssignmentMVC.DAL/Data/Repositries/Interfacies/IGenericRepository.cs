@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AssignmentMVC.DAL.Models;
@@ -12,6 +13,7 @@ namespace AssignmentMVC.DAL.Data.Repositries.Interfacies
     {
         // Get All 
         IEnumerable<TEntity> GetAll(bool withtracking = false);
+        IEnumerable<TEntity> GetAll(Expression<Func<TEntity,bool>>predicate);
         // GetById 
         TEntity GetByID(int id);
         void Update(TEntity Entity);

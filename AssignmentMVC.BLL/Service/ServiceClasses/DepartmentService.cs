@@ -8,6 +8,7 @@ using AssignmentMVC.BLL.Factories;
 using AssignmentMVC.BLL.Service.ServicesInterface;
 using AssignmentMVC.DAL.Data.Repositries.Interfacies;
 using AssignmentMVC.DAL.Models;
+using AssignmentMVC.DAL.Models.Departments;
 
 namespace AssignmentMVC.BLL.Service.ServiceClasses
 {
@@ -17,9 +18,14 @@ namespace AssignmentMVC.BLL.Service.ServiceClasses
 
         //private readonly IDepartmentRepositroy _departmentRepository = departmentRepositroy;
 
-        public IEnumerable<DepartmentDto> GetAllDepartment()
+        public IEnumerable<DepartmentDto> GetAllDepartment(string? DepartmentSearchName)
         {
-            var department = unitOfwork.DepartmentRepository.GetAll();
+            IEnumerable<Department> department;
+            if (!String.IsNullOrWhiteSpace(DepartmentSearchName))
+
+            department = unitOfwork.DepartmentRepository.GetAll(d=> d.Name.ToLower().Contains(DepartmentSearchName.ToLower()));
+            else
+                department = unitOfwork.DepartmentRepository.GetAll();
             // 1.manaul mapping
             //var departmentToReturn = department.Select(D => new DepartmentDto()
             //{
@@ -87,5 +93,7 @@ namespace AssignmentMVC.BLL.Service.ServiceClasses
                 return _unitOfwork.saveChanges() > 0 ? true : false;
             }
         }
+
+      
     }
 }

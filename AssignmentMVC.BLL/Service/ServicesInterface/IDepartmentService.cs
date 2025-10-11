@@ -6,7 +6,7 @@ namespace AssignmentMVC.BLL.Service.ServicesInterface
     {
         int AddDepartment(CreateDepartmentDto departmentdto);
         bool DeleteDepartment(int id);
-        IEnumerable<DepartmentDto> GetAllDepartment();
+        IEnumerable<DepartmentDto> GetAllDepartment(string? DepartmentSearchName );
         DepartmentDetailsDto? GetDepartmentById(int id);
         int UpdateDepartment(UpdateDepartmentDto departmentDto);
     }

@@ -16,42 +16,35 @@ namespace AssignmentMVC.BLL.Service.ServiceClasses
 {
     public class EmployeeService(IUnitOfwork unitOfwork, IMapper _mapper, IAttachmentService _attachmentService) : IEmployeeService
     {
-        public IEnumerable<EmployeeDto> GetAllEmployees(bool WithTracking)
+        public IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName, bool WithTracking)
         {
-            var employees = unitOfwork.EmployeeRepository.GetAll(WithTracking);
-            //var returnEmpToDto = employees.Select(e => new EmployeeDto()
-            //{
-            //    Id = e.Id,
-            //    Name = e.Name,
-            //    Email = e.Email,
-            //    Age = e.Age,
-            //    Salary = e.Salary,
-            //    IsActive = e.IsActive,
-            //    EmployeeType = e.EmployeeType.ToString(),
-            //    Gender  = e.Gender.ToString(),
-            //});
-            //return returnEmpToDto;
+            IEnumerable<Employee> employees;
+            if (!String.IsNullOrWhiteSpace(EmployeeSearchName))
+                employees = unitOfwork.EmployeeRepository.GetAll(e=> e.Name.ToLower().Contains(EmployeeSearchName.ToLower()));
+            else
+            employees = unitOfwork.EmployeeRepository.GetAll(WithTracking);
+            
             var returnEmpToDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
             return returnEmpToDto;
         }
-        public IEnumerable<EmployeeDto> SearchEmployeeByName(string name)
-        {
-            var employees = unitOfwork.EmployeeRepository.GetEmployeeByName(name.ToLower());
-            //var returnEmpToDto = employees.Select(e => new EmployeeDto()
-            //{
-            //    Id = e.Id,
-            //    Name = e.Name,
-            //    Email = e.Email,
-            //    Age = e.Age,
-            //    Salary = e.Salary,
-            //    IsActive = e.IsActive,
-            //    EmployeeType = e.EmployeeType.ToString(),
-            //    Gender  = e.Gender.ToString(),
-            //});
-            //return returnEmpToDto;
-            var returnEmpToDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
-            return returnEmpToDto;
-        }
+        //public IEnumerable<EmployeeDto> SearchEmployeeByName(string name)
+        //{
+        //    var employees = unitOfwork.EmployeeRepository.GetEmployeeByName(name.ToLower());
+        //    //var returnEmpToDto = employees.Select(e => new EmployeeDto()
+        //    //{
+        //    //    Id = e.Id,
+        //    //    Name = e.Name,
+        //    //    Email = e.Email,
+        //    //    Age = e.Age,
+        //    //    Salary = e.Salary,
+        //    //    IsActive = e.IsActive,
+        //    //    EmployeeType = e.EmployeeType.ToString(),
+        //    //    Gender  = e.Gender.ToString(),
+        //    //});
+        //    //return returnEmpToDto;
+        //    var returnEmpToDto = _mapper.Map<IQueryable<Employee>, IEnumerable<EmployeeDto>>(employees);
+        //    return returnEmpToDto;
+        //}
         public EmployeeDetailsDto? GetEmployeeById(int id)
         {
             var employee = unitOfwork.EmployeeRepository.GetByID(id);

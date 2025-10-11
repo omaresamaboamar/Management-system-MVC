@@ -12,9 +12,9 @@ namespace AssignmentMVC.PL.Controllers
     {
         // private readonly IDepartmentService _departmentService = departmentService;
 
-        public IActionResult Index()
+        public IActionResult Index(string? DepartmentSearchName)
         {
-            var department = _departmentService.GetAllDepartment();
+            var department = _departmentService.GetAllDepartment(DepartmentSearchName);
             return View(department);
         }
 

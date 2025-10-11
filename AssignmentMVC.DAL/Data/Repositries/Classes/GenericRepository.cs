@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AssignmentMVC.DAL.Data.Repositries.Interfacies;
@@ -34,6 +35,11 @@ namespace AssignmentMVC.DAL.Data.Repositries.Classes
                 return _dbContext.Set<TEntity>().Where(e=>e.IsDeleted!= true).AsNoTracking().ToList();
             }
 
+        }
+
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbContext.Set<TEntity>().Where(predicate).ToList();
         }
 
         public TEntity GetByID(int id)
